@@ -710,33 +710,50 @@ THROUGHPUT
   const prefersReduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
   const isTouch = matchMedia("(max-width: 860px), (pointer: coarse)").matches;
 
+  let lenis = null;
   if (!prefersReduced && !isTouch && window.Lenis) {
-    const lenis = new Lenis({
+    lenis = new Lenis({
       lerp: 0.055,            // lower = smoother + slower to settle (premium drift)
       wheelMultiplier: 0.65,  // tame raw wheel sensitivity
       touchMultiplier: 1.1,
       smoothWheel: true,
     });
-
     function raf(time) {
       lenis.raf(time);
       requestAnimationFrame(raf);
     }
     requestAnimationFrame(raf);
-
-    // route in-page anchor clicks through Lenis so they ease instead of jump
-    document.querySelectorAll('a[href^="#"]').forEach((a) => {
-      a.addEventListener("click", (e) => {
-        const id = a.getAttribute("href");
-        if (id.length < 2) return;
-        const target = document.querySelector(id);
-        if (!target) return;
-        e.preventDefault();
-        lenis.scrollTo(target, { offset: -120, duration: 1.6 });
-      });
-    });
   }
-  // (mobile uses native CSS scroll-behavior + scroll-margin-top on panels)
+
+  // In-page navigation. Runs ALWAYS, independent of Lenis, so clicks never dead-end.
+  // Panels are position:sticky, so getBoundingClientRect/offsetTop lie once a panel
+  // is pinned. The always-true measurement: a panel pins to the top at the scroll
+  // position equal to the SUM OF HEIGHTS of the panels before it (sticky elements
+  // still occupy their normal flow space). That fixes scrolling UP to a pinned panel.
+  const panels = Array.from(document.querySelectorAll(".panel"));
+  function panelScrollY(target) {
+    const targetPanel = target.closest(".panel") || target;
+    const idx = panels.indexOf(targetPanel);
+    if (idx <= 0) return 0;
+    let y = 0;
+    for (let i = 0; i < idx; i++) y += panels[i].offsetHeight;
+    return y;
+  }
+  document.querySelectorAll('a[href^="#"]').forEach((a) => {
+    a.addEventListener("click", (e) => {
+      const id = a.getAttribute("href");
+      if (id.length < 2) return;
+      const target = document.querySelector(id);
+      if (!target) return;
+      e.preventDefault();
+      const y = panelScrollY(target);
+      if (lenis) {
+        lenis.scrollTo(y, { duration: 1.6, force: true });
+      } else {
+        window.scrollTo({ top: y, behavior: "smooth" });
+      }
+    });
+  });
 
 </script>
 </body>
