@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<script>document.documentElement.classList.add("js");</script>
+<title>GUNJAN SHRIVASTAVA // SOFTWARE ENGINEER</title>
+<meta name="description" content="Gunjan Shrivastava - software engineer building systems, matching engines, and real-time intelligence pipelines." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=JetBrains+Mono:wght@400;500;700;800&display=swap" rel="stylesheet" />
+<style>
+  /* =========================================================
+     SYSTEM TOKENS  (PRD: monospace, cream/black, 1px borders)
+     ========================================================= */
+  :root {
+    --cream: #ffffff;
+    --cream-2: #f5f5f5;
+    --ink: #000000;
+    --ink-soft: #444444;
+    --accent: #000000;
+    --line: #000000;
+    --mono: "JetBrains Mono", "Space Mono", monospace;
+
+    --gutter: 22px;
+    --maxw: 1080px;
+    --bw: 1.5px;
+
+    --xs: 4px; --sm: 8px; --md: 16px; --lg: 24px; --xl: 36px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  /* Lenis controls scrolling when active; disable native smooth to avoid conflict */
+  html.lenis, html.lenis body { height: auto; }
+  .lenis.lenis-smooth { scroll-behavior: auto !important; }
+  .lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+  .lenis.lenis-stopped { overflow: hidden; }
+  body {
+    font-family: var(--mono);
+    background: var(--ink);
+    color: var(--ink);
+    font-size: 15px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    text-transform: uppercase;
+  }
+  ::selection { background: #000000; color: #ffffff; }
+  a { color: inherit; text-decoration: none; }
+  button { font: inherit; cursor: pointer; background: none; border: none; color: inherit; }
+  img { display: block; max-width: 100%; }
+  .lower { text-transform: none; }
+
+  /* =========================================================
+     CURTAIN STACK
+     ========================================================= */
+  .stack { position: relative; padding-top: 132px; }
+  .panel {
+    min-height: 100vh;
+    min-height: 100svh;
+    position: sticky;
+    top: 0;
+    background: var(--cream);
+    border-top: var(--bw) solid var(--line);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    scroll-margin-top: 104px;
+  }
+  .panel:nth-of-type(1) { z-index: 1; }
+  .panel:nth-of-type(2) { z-index: 2; }
+  .panel:nth-of-type(3) { z-index: 3; }
+  .panel:nth-of-type(4) { z-index: 4; }
+  .panel:nth-of-type(5) { z-index: 5; }
+  .panel:nth-of-type(6) { z-index: 6; }
+  .panel:first-of-type { border-top: none; margin-top: -132px; padding-top: 132px; }
+
+  .inner {
+    width: 100%; max-width: var(--maxw); margin: 0 auto;
+    padding: 0 var(--gutter); flex: 1;
+    display: flex; flex-direction: column;
+  }
+
+  .panel-head { border-bottom: var(--bw) solid var(--line); padding: var(--lg) 0; }
+  .ph-row { display: flex; align-items: baseline; justify-content: space-between; gap: var(--md); max-width: var(--maxw); margin: 0 auto; width: 100%; padding: 0 var(--gutter); }
+  .ph-label { font-weight: 400; font-size: 13px; text-transform: none; color: var(--ink-soft); }
+  .ph-title { font-weight: 700; font-size: 17px; letter-spacing: 0.02em; border-bottom: var(--bw) solid var(--line); padding-bottom: 3px; margin-top: 6px; }
+  .ph-no { font-size: 12px; color: var(--ink-soft); }
+
+  /* =========================================================
+     TOPBAR: NAV + MARQUEE
+     ========================================================= */
+  .topbar { position: fixed; top: 0; left: 0; right: 0; z-index: 200; background: var(--cream); }
+  .nav { border: var(--bw) solid var(--line); margin: 10px var(--gutter) 0; height: 52px; display: flex; align-items: center; justify-content: space-between; padding: 0 14px; }
+  .brand { display: flex; align-items: center; gap: 9px; font-weight: 700; font-size: 13px; letter-spacing: 0.04em; }
+  .brand .dot { width: 12px; height: 12px; border-radius: 50%; background: #000000; border: var(--bw) solid var(--line); }
+  .nav-links { display: flex; gap: 24px; }
+  .nav-links a { font-size: 12px; letter-spacing: 0.08em; transition: color 0.2s; }
+  .nav-links a:hover { color: #666666; }
+  .nav-cta { border: var(--bw) solid var(--line); padding: 7px 13px; font-size: 12px; letter-spacing: 0.06em; transition: background 0.2s, color 0.2s; }
+  .nav-cta:hover { background: var(--ink); color: var(--cream); }
+  @media (max-width: 860px) { .nav-links { display: none; } }
+
+  .marquee { border-left: var(--bw) solid var(--line); border-right: var(--bw) solid var(--line); border-bottom: var(--bw) solid var(--line); margin: 0 var(--gutter); height: 34px; background: #000000; color: #ffffff; overflow: hidden; display: flex; align-items: center; }
+  .marquee-track { display: flex; white-space: nowrap; animation: scroll 26s linear infinite; }
+  .marquee-track span { font-size: 12px; letter-spacing: 0.1em; padding: 0 18px; }
+  @keyframes scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+  .topbar:hover .marquee-track { animation-play-state: paused; }
+
+  /* =========================================================
+     1. HERO
+     ========================================================= */
+  .hero .inner { justify-content: center; padding-top: var(--xl); padding-bottom: var(--xl); }
+  .hero-grid { display: grid; grid-template-columns: 1.5fr 1fr; border: var(--bw) solid var(--line); min-height: 460px; }
+  .hero-text { padding: var(--xl); display: flex; flex-direction: column; justify-content: space-between; border-right: var(--bw) solid var(--line); }
+  .hero-status { display: flex; align-items: center; gap: 10px; font-size: 12px; letter-spacing: 0.08em; }
+  .hero-status .pulse { width: 9px; height: 9px; border-radius: 50%; background: #000000; animation: pulse 2.2s infinite; }
+  @keyframes pulse { 0%,100% { box-shadow: 0 0 0 0 rgba(0,0,0,.5); } 50% { box-shadow: 0 0 0 8px rgba(0,0,0,0); } }
+  .hero h1 { font-weight: 800; font-size: clamp(36px, 6vw, 80px); line-height: 0.92; letter-spacing: -0.03em; margin: var(--lg) 0; }
+  .hero h1 em { font-style: normal; color: #000000; }
+  .hero-sub { text-transform: none; font-size: 15px; line-height: 1.55; max-width: 42ch; color: var(--ink-soft); }
+  .hero-actions { display: flex; gap: 12px; margin-top: var(--lg); flex-wrap: wrap; }
+  .btn { border: var(--bw) solid var(--line); padding: 11px 18px; font-size: 13px; letter-spacing: 0.04em; transition: background 0.2s, color 0.2s; }
+  .btn-solid { background: var(--ink); color: var(--cream); }
+  .btn-solid:hover { background: #333333; }
+  .btn-ghost:hover { background: var(--ink); color: var(--cream); }
+  .hero-img { background: var(--ink); color: var(--cream); display: flex; flex-direction: column; justify-content: space-between; padding: var(--lg); }
+  .hero-img .glyph { font-size: 13px; letter-spacing: 0.1em; color: #ffffff; }
+  .hero-img .ascii { font-size: 11px; line-height: 1.35; color: var(--cream); white-space: pre; align-self: center; margin: auto 0; opacity: .92; }
+  .hero-img .cap { font-size: 11px; letter-spacing: 0.06em; color: rgba(255,255,255,.6); }
+  @media (max-width: 820px) {
+    .hero-grid { grid-template-columns: 1fr; }
+    .hero-text { border-right: none; border-bottom: var(--bw) solid var(--line); }
+    .hero-img .ascii { display: none; }
+    .hero-img { min-height: 120px; }
+  }
+
+  /* =========================================================
+     2. ABOUT
+     ========================================================= */
+  .about-grid { display: grid; grid-template-columns: 1.4fr 1fr; border: var(--bw) solid var(--line); flex: 1; }
+  .about-lead { padding: var(--xl); border-right: var(--bw) solid var(--line); display: flex; flex-direction: column; justify-content: center; }
+  .about-lead p { text-transform: none; font-size: clamp(17px, 2.2vw, 24px); line-height: 1.45; letter-spacing: -0.01em; }
+  .about-lead p .hl { color: #000000; }
+  .about-meta { display: grid; grid-template-rows: repeat(3, 1fr); }
+  .about-cell { padding: var(--lg) var(--xl); border-bottom: var(--bw) solid var(--line); }
+  .about-cell:last-child { border-bottom: none; }
+  .about-cell .k { font-size: 11px; letter-spacing: 0.1em; color: #666666; }
+  .about-cell .v { text-transform: none; font-size: 14px; color: var(--ink-soft); margin-top: 6px; line-height: 1.5; }
+  .placeholder-note { display: inline-block; margin-top: 10px; font-size: 11px; color: var(--ink-soft); border: 1px dashed var(--ink-soft); padding: 4px 8px; text-transform: none; }
+  @media (max-width: 820px) { .about-grid { grid-template-columns: 1fr; } .about-lead { border-right: none; border-bottom: var(--bw) solid var(--line); } }
+
+  /* =========================================================
+     3. CODING PROFILES
+     ========================================================= */
+  .profiles { display: grid; grid-template-columns: repeat(4, 1fr); border-left: var(--bw) solid var(--line); border-top: var(--bw) solid var(--line); }
+  .profile { aspect-ratio: 1 / 1; border-right: var(--bw) solid var(--line); border-bottom: var(--bw) solid var(--line); padding: var(--lg); display: flex; flex-direction: column; gap: var(--sm); transition: background 0.25s, color 0.25s; }
+  .profile:hover { background: var(--ink); color: var(--cream); }
+  .profile .p-plat { font-weight: 700; font-size: 15px; letter-spacing: 0.02em; }
+  .profile .p-handle { text-transform: none; font-size: 13px; color: #666666; }
+  .profile .p-tag { font-size: 11px; color: var(--ink-soft); margin-top: auto; letter-spacing: 0.04em; }
+  .profile:hover .p-tag { color: rgba(255,255,255,.6); }
+  .profile .p-arrow { font-size: 12px; letter-spacing: 0.05em; }
+  @media (max-width: 860px) { .profiles { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 460px) { .profiles { grid-template-columns: 1fr; } }
+
+  /* GitHub Contribution Graph */
+  .gh-graph { border: var(--bw) solid var(--line); margin-top: var(--lg); padding: var(--lg); }
+  .gh-graph-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--md); }
+  .gh-graph-head .gh-label { font-size: 12px; letter-spacing: 0.06em; font-weight: 700; }
+  .gh-graph-head .gh-link { font-size: 11px; color: var(--ink-soft); text-transform: none; }
+  .gh-graph-head .gh-link:hover { color: var(--ink); }
+  .gh-grid { display: grid; grid-template-columns: repeat(52, 1fr); gap: 3px; }
+  .gh-col { display: flex; flex-direction: column; gap: 3px; }
+  .gh-cell { aspect-ratio: 1 / 1; border: 1px solid var(--line); opacity: 0.12; }
+  .gh-cell.l1 { opacity: 0.3; background: var(--ink); }
+  .gh-cell.l2 { opacity: 0.5; background: var(--ink); }
+  .gh-cell.l3 { opacity: 0.75; background: var(--ink); }
+  .gh-cell.l4 { opacity: 1; background: var(--ink); }
+  .gh-months { display: grid; grid-template-columns: repeat(12, 1fr); margin-top: 6px; }
+  .gh-months span { font-size: 9px; color: var(--ink-soft); text-transform: none; }
+  .gh-legend { display: flex; align-items: center; gap: 4px; margin-top: 10px; justify-content: flex-end; }
+  .gh-legend span { font-size: 9px; color: var(--ink-soft); text-transform: none; }
+  .gh-legend .gh-cell { width: 10px; height: 10px; }
+
+  /* =========================================================
+     4. ACHIEVEMENTS  (bordered grid)
+     ========================================================= */
+  .awards { display: grid; grid-template-columns: repeat(3, 1fr); border-left: var(--bw) solid var(--line); border-top: var(--bw) solid var(--line); flex: 1; }
+  .award { border-right: var(--bw) solid var(--line); border-bottom: var(--bw) solid var(--line); padding: var(--lg); display: flex; flex-direction: column; gap: 8px; transition: background 0.25s, color 0.25s; }
+  .award:hover { background: var(--ink); color: var(--cream); }
+  .award .aw-rank { font-weight: 800; font-size: clamp(20px, 2.4vw, 28px); letter-spacing: -0.02em; line-height: 1; }
+  .award .aw-title { font-size: 13px; font-weight: 700; letter-spacing: 0.02em; }
+  .award .aw-desc { text-transform: none; font-size: 12px; line-height: 1.5; color: var(--ink-soft); margin-top: auto; }
+  .award:hover .aw-desc { color: rgba(255,255,255,.7); }
+  .award .aw-no { font-size: 11px; color: #666666; }
+  .award:hover .aw-no { color: rgba(255,255,255,.5); }
+  @media (max-width: 860px) { .awards { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 460px) { .awards { grid-template-columns: 1fr; } }
+
+  /* =========================================================
+     5. PROJECTS  (2x2 detailed cards)
+     ========================================================= */
+  .projects { display: grid; grid-template-columns: 1fr 1fr; border-left: var(--bw) solid var(--line); border-top: var(--bw) solid var(--line); flex: 1; }
+  .proj { border-right: var(--bw) solid var(--line); border-bottom: var(--bw) solid var(--line); padding: var(--lg) var(--lg) var(--md); display: flex; flex-direction: column; gap: 10px; transition: background 0.25s, color 0.25s; }
+  .proj:hover { background: var(--ink); color: var(--cream); }
+  .proj-top { display: flex; align-items: baseline; justify-content: space-between; gap: var(--sm); }
+  .proj .pj-no { font-size: 11px; color: #666666; }
+  .proj .pj-arrow { font-size: 13px; }
+  .proj h3 { font-weight: 700; font-size: 17px; letter-spacing: 0.01em; }
+  .proj .pj-desc { text-transform: none; font-size: 13px; line-height: 1.55; color: var(--ink-soft); }
+  .proj:hover .pj-desc { color: rgba(255,255,255,.78); }
+  .proj .pj-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: auto; padding-top: var(--sm); }
+  .proj .pj-tags span { font-size: 10px; letter-spacing: 0.04em; border: 1px solid currentColor; padding: 3px 7px; opacity: .8; }
+  @media (max-width: 760px) { .projects { grid-template-columns: 1fr; } }
+
+  /* =========================================================
+     5. CONTACT + FOOTER
+     ========================================================= */
+  .contact { background: var(--ink); color: var(--cream); }
+  .contact .inner { justify-content: center; padding: var(--xl) var(--gutter); }
+  .contact-big { padding: var(--xl) 0; }
+  .contact-big .avail { font-size: 12px; letter-spacing: 0.1em; color: #ffffff; }
+  .contact-big h2 { font-weight: 800; font-size: clamp(32px, 5.6vw, 72px); line-height: 0.95; letter-spacing: -0.03em; margin-top: var(--md); }
+  .contact-big h2 a { color: #ffffff; }
+  .contact-big h2 a:hover { text-decoration: line-through; }
+
+  .footer { display: grid; grid-template-columns: 34% 33% 33%; border: var(--bw) solid var(--cream); margin-top: var(--xl); }
+  .footer .col { padding: var(--xl); border-right: var(--bw) solid var(--cream); }
+  .footer .col:last-child { border-right: none; }
+  .footer .col h4 { font-size: 12px; letter-spacing: 0.08em; margin-bottom: var(--md); color: rgba(255,255,255,.55); }
+  .footer .brand-tag { font-weight: 700; font-size: 15px; line-height: 1.4; }
+  .footer .brand-tag .ac { color: #ffffff; }
+  .footer .col a { display: block; font-size: 13px; letter-spacing: 0.03em; margin-bottom: 9px; transition: color 0.2s; text-transform: none; }
+  .footer .col a:hover { color: #cccccc; }
+  .socials { display: flex; gap: 10px; }
+  .socials a { width: 36px; height: 36px; border: var(--bw) solid var(--cream); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; margin: 0; transition: background 0.2s, color 0.2s, border-color 0.2s; text-transform: uppercase; }
+  .socials a:hover { background: #ffffff; border-color: #ffffff; color: #000000; }
+  .copyright { display: flex; align-items: center; justify-content: space-between; border-top: var(--bw) solid var(--cream); margin-top: -1.5px; padding: 14px 0; font-size: 11px; letter-spacing: 0.05em; }
+  .copyright .links { display: flex; gap: 18px; }
+  .copyright a:hover { color: #cccccc; }
+  @media (max-width: 760px) {
+    .footer { grid-template-columns: 1fr; }
+    .footer .col { border-right: none; border-bottom: var(--bw) solid var(--cream); }
+    .copyright { flex-direction: column; gap: 10px; align-items: flex-start; }
+  }
+
+  /* =========================================================
+     REVEAL + REDUCED MOTION
+     ========================================================= */
+  .reveal { opacity: 1; transform: none; }
+  /* only hide for the scroll animation once JS is confirmed running */
+  .js .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.7s ease, transform 0.7s ease; }
+  .js .reveal.in { opacity: 1; transform: none; }
+  .reveal[data-d="1"] { transition-delay: 0.08s; }
+  .reveal[data-d="2"] { transition-delay: 0.16s; }
+  .reveal[data-d="3"] { transition-delay: 0.24s; }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+    .reveal { opacity: 1; transform: none; }
+    .marquee-track { animation: none !important; }
+  }
+
+  /* =========================================================
+     MOBILE: disable curtain stack, fall back to normal scroll
+     ========================================================= */
+  @media (max-width: 860px) {
+    /* curtain off: panels flow naturally instead of pinning + clipping */
+    .stack { padding-top: 104px; }
+    .panel {
+      position: static;
+      min-height: 0;
+      overflow: visible;
+      z-index: auto !important;
+    }
+    .panel:first-of-type { margin-top: 0; padding-top: 0; }
+    .hero { min-height: calc(100svh - 104px); }
+    .hero .inner { padding-top: var(--lg); padding-bottom: var(--lg); }
+
+    /* tighter rhythm */
+    :root { --gutter: 16px; }
+    .inner { padding-left: var(--gutter); padding-right: var(--gutter); }
+    .hero-text { padding: var(--lg); }
+    .about-lead { padding: var(--lg); }
+    .about-cell { padding: var(--md) var(--lg); }
+    .profile, .award, .proj { padding: var(--md); }
+    .contact .inner { padding: var(--lg) var(--gutter); }
+    .footer .col { padding: var(--lg); }
+    section.panel .inner[style] { padding-top: var(--md) !important; padding-bottom: var(--md) !important; }
+
+    .hero h1 { font-size: clamp(40px, 12vw, 60px); }
+    .panel-head { padding: var(--md) 0; }
+  }
+
+  /* GitHub graph: swipe horizontally on small screens */
+  @media (max-width: 760px) {
+    .gh-grid-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .gh-grid { min-width: 560px; }
+    .gh-months { min-width: 560px; }
+  }
+
+  /* mobile slide-down menu */
+  .menu-toggle { display: none; flex-direction: column; gap: 4px; padding: 8px; }
+  .menu-toggle span { display: block; width: 20px; height: 2px; background: var(--ink); transition: transform 0.25s, opacity 0.25s; }
+  .topbar.menu-open .menu-toggle span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+  .topbar.menu-open .menu-toggle span:nth-child(2) { opacity: 0; }
+  .topbar.menu-open .menu-toggle span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+  @media (max-width: 860px) {
+    .menu-toggle { display: flex; }
+    .nav-links {
+      position: fixed; top: 74px; left: var(--gutter); right: var(--gutter);
+      flex-direction: column; gap: 0;
+      background: var(--cream); border: var(--bw) solid var(--line);
+      display: none;
+    }
+    .topbar.menu-open .nav-links { display: flex; }
+    .nav-links a { padding: 14px 16px; border-bottom: var(--bw) solid var(--line); font-size: 13px; }
+    .nav-links a.nav-cta { border: none; background: var(--ink); color: var(--cream); }
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ TOPBAR ============ -->
+<div class="topbar">
+  <div class="nav">
+    <a href="#home" class="brand"><span class="dot"></span>G. SHRIVASTAVA</a>
+    <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+    <nav class="nav-links" id="navLinks">
+      <a href="#about">About</a>
+      <a href="#profiles">Profiles</a>
+      <a href="#awards">Awards</a>
+      <a href="#projects">Projects</a>
+      <a href="#contact">Contact</a>
+      <a href="#contact" class="nav-cta">Get in touch</a>
+    </nav>
+  </div>
+  <div class="marquee">
+    <div class="marquee-track">
+      <span>C++ Developer // Matching Engines + Concurrency // Financial Markets // 3★ CodeChef // Codeforces Specialist // NIT Raipur '27 //</span>
+      <span>C++ Developer // Matching Engines + Concurrency // Financial Markets // 3★ CodeChef // Codeforces Specialist // NIT Raipur '27 //</span>
+    </div>
+  </div>
+</div>
+
+<main class="stack">
+
+  <!-- ================= 1. HOME ================= -->
+  <section class="panel hero" id="home">
+    <div class="inner">
+      <div class="hero-grid">
+        <div class="hero-text">
+          <div class="hero-status"><span class="pulse"></span> Final year @ NIT Raipur // open to SWE roles</div>
+          <h1>Gunjan<br>Shrivastava</h1>
+          <div>
+            <p class="hero-sub lower">Final-year student at NIT Raipur with interests in software engineering, backend systems, and competitive programming.<br><br>I enjoy building projects that help me understand how real-world software works, from network servers and matching engines to full-stack applications.</p>
+            <div class="hero-actions">
+              <a href="#projects" class="btn btn-solid">View projects // </a>
+              <a href="https://drive.google.com/drive/folders/1DQsBhIy9ZGyS9rGZ02QAQ7AKSeR-_8ap?usp=drive_link" class="btn btn-ghost" target="_blank" rel="noopener">Download CV</a>
+            </div>
+          </div>
+        </div>
+        <div class="hero-img">
+          <div class="glyph">// GIT STATUS</div>
+          <pre class="ascii">// EXEC LOG
+ORDER #4491  FILLED
+  100 @ 4490.9
+  latency:  65 ns
+══════════════════
+THROUGHPUT
+  15.33M orders/s
+[live] matching ...
+</pre>
+          <div class="cap">// always building</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= 2. ABOUT ================= -->
+  <section class="panel" id="about">
+    <div class="panel-head">
+      <div class="ph-row">
+        <div>
+          <div class="ph-label lower">About me</div>
+          <div class="ph-title">WHO I AM</div>
+        </div>
+        <span class="ph-no">01 / 05 &#9660;</span>
+      </div>
+    </div>
+    <div class="inner" style="padding-top:var(--lg);padding-bottom:var(--lg);">
+      <div class="about-grid">
+        <div class="about-lead reveal">
+          <p>I'm a final-year student at <span class="hl">NIT Raipur</span>, headed into software engineering with a bias toward systems and markets. Currently I am building the low-level machinery: a C++ order matching engine, a multithreaded HTTP server, and a forex agent that scrapes news and scalps CFDs and futures off the read. Right now I'm grinding DSA to crack top companies and going deep on <span class="hl">multithreading and concurrency</span> in C++.</p>
+        </div>
+        <div class="about-meta">
+          <div class="about-cell reveal" data-d="1">
+            <div class="k">FOCUS</div>
+            <div class="v lower">C++ systems, low-latency engines, concurrency, trading infra</div>
+          </div>
+          <div class="about-cell reveal" data-d="2">
+            <div class="k">CURRENTLY</div>
+            <div class="v lower">7th sem @ NIT Raipur, DSA grind, going deep on multithreaded C++</div>
+          </div>
+          <div class="about-cell reveal" data-d="3">
+            <div class="k">INTO</div>
+            <div class="v lower">Finance and trading markets, exchange internals, the cost of a nanosecond</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= 3. CODING PROFILES ================= -->
+  <section class="panel" id="profiles">
+    <div class="panel-head">
+      <div class="ph-row">
+        <div>
+          <div class="ph-label lower">Competitive programming</div>
+          <div class="ph-title">CODING PROFILES</div>
+        </div>
+        <span class="ph-no">02 / 05 &#9660;</span>
+      </div>
+    </div>
+    <div class="inner" style="padding-top:var(--lg);padding-bottom:var(--lg);">
+      <div class="profiles reveal">
+        <a class="profile" href="https://leetcode.com/u/certp_boy/" target="_blank" rel="noopener">
+          <div class="p-plat">LeetCode</div>
+          <div class="p-handle">@certp_boy</div>
+          <div class="p-tag">DSA // problem solving</div>
+          <div class="p-arrow">Open &rarr;</div>
+        </a>
+        <a class="profile" href="https://www.codechef.com/users/certp_boy" target="_blank" rel="noopener">
+          <div class="p-plat">CodeChef</div>
+          <div class="p-handle">@certp_boy</div>
+          <div class="p-tag">3★ // contests</div>
+          <div class="p-arrow">Open &rarr;</div>
+        </a>
+        <a class="profile" href="https://codeforces.com/profile/CERTPBOY" target="_blank" rel="noopener">
+          <div class="p-plat">Codeforces</div>
+          <div class="p-handle">@CERTPBOY</div>
+          <div class="p-tag">Specialist // 1586</div>
+          <div class="p-arrow">Open &rarr;</div>
+        </a>
+        <a class="profile" href="https://atcoder.jp/users/certpboy" target="_blank" rel="noopener">
+          <div class="p-plat">AtCoder</div>
+          <div class="p-handle">@certpboy</div>
+          <div class="p-tag">Beginner + regular contests</div>
+          <div class="p-arrow">Open &rarr;</div>
+        </a>
+      </div>
+      <!-- GitHub Contribution Graph -->
+      <div class="gh-graph reveal" data-d="1">
+        <div class="gh-graph-head">
+          <span class="gh-label">GITHUB CONTRIBUTIONS</span>
+          <a href="https://github.com/HARSHCRR" target="_blank" rel="noopener" class="gh-link">@HARSHCRR &rarr;</a>
+        </div>
+        <div class="gh-grid-scroll">
+          <div class="gh-grid" id="gh-grid"></div>
+          <div class="gh-months">
+            <span>Jan</span><span>Feb</span><span>Mar</span><span>Apr</span><span>May</span><span>Jun</span>
+            <span>Jul</span><span>Aug</span><span>Sep</span><span>Oct</span><span>Nov</span><span>Dec</span>
+          </div>
+        </div>
+        <div class="gh-legend">
+          <span>Less</span>
+          <div class="gh-cell"></div>
+          <div class="gh-cell l1"></div>
+          <div class="gh-cell l2"></div>
+          <div class="gh-cell l3"></div>
+          <div class="gh-cell l4"></div>
+          <span>More</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= 4. ACHIEVEMENTS ================= -->
+  <section class="panel" id="awards">
+    <div class="panel-head">
+      <div class="ph-row">
+        <div>
+          <div class="ph-label lower">Recognition</div>
+          <div class="ph-title">ACHIEVEMENTS</div>
+        </div>
+        <span class="ph-no">03 / 05 &#9660;</span>
+      </div>
+    </div>
+    <div class="inner" style="padding-top:var(--lg);padding-bottom:var(--lg);">
+      <div class="awards reveal">
+        <div class="award">
+          <div class="aw-no">/01</div>
+          <div class="aw-rank">RANK 128</div>
+          <div class="aw-title">Codeforces Div. 3 Round</div>
+          <div class="aw-desc">Among thousands of global participants</div>
+        </div>
+        <div class="award">
+          <div class="aw-no">/02</div>
+          <div class="aw-rank">SPECIALIST</div>
+          <div class="aw-title">Codeforces // 1586 Rating</div>
+          <div class="aw-desc">CodeChef 3 star alongside</div>
+        </div>
+        <div class="award">
+          <div class="aw-no">/03</div>
+          <div class="aw-rank">WINNER</div>
+          <div class="aw-title">I.D.E.A. Hackathon 2025</div>
+          <div class="aw-desc">Outperformed 1,000+ teams</div>
+        </div>
+        <div class="award">
+          <div class="aw-no">/04</div>
+          <div class="aw-rank">TOP 10</div>
+          <div class="aw-title">Pitch Cafe 8.0, IIIT Delhi</div>
+          <div class="aw-desc">Finalist among 500+ startup pitches</div>
+        </div>
+        <div class="award">
+          <div class="aw-no">/05</div>
+          <div class="aw-rank">FINALIST</div>
+          <div class="aw-title">10+ Hackathons & Competitions</div>
+          <div class="aw-desc">Repeat finalist across hackathons and startup events</div>
+        </div>
+        <div class="award">
+          <div class="aw-no">/06</div>
+          <div class="aw-rank">FOUNDER</div>
+          <div class="aw-title">HealthChain // Pre-Incubated</div>
+          <div class="aw-desc">NIT Raipur Foundation for Innovation & Entrepreneurship (NITRRFIE, NIDHI-TBI)</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= 5. PROJECTS ================= -->
+  <section class="panel" id="projects">
+    <div class="panel-head">
+      <div class="ph-row">
+        <div>
+          <div class="ph-label lower">Selected work</div>
+          <div class="ph-title">PROJECTS</div>
+        </div>
+        <span class="ph-no">04 / 05 &#9660;</span>
+      </div>
+    </div>
+    <div class="inner" style="padding-top:var(--lg);padding-bottom:var(--lg);">
+      <div class="projects reveal">
+
+        <a class="proj" href="https://github.com/HARSHCRR/HealthChain" target="_blank" rel="noopener">
+          <div class="proj-top"><span class="pj-no">/01</span><span class="pj-arrow">&#8599;</span></div>
+          <h3>HealthChain</h3>
+          <p class="pj-desc">Decentralized medical records platform that links a patient's history to their fingerprint. Enroll once, then a doctor scans a fingerprint to instantly pull verified records, so no patient suffers from missing history in an emergency.</p>
+          <div class="pj-tags"><span>Next.js</span><span>Flask</span><span>MongoDB</span><span>Biometrics</span></div>
+        </a>
+
+        <a class="proj" href="https://github.com/HARSHCRR/ORDERBOOK" target="_blank" rel="noopener">
+          <div class="proj-top"><span class="pj-no">/02</span><span class="pj-arrow">&#8599;</span></div>
+          <h3>Orderbook Matching Engine</h3>
+          <p class="pj-desc">High-performance single-threaded exchange matching engine in C++ using price-time priority. Peaks at 15.3M orders/sec (65ns/order) with O(1) best bid/ask and O(log N) match. A data-structures exercise turned systems-engineering project on latency and cache efficiency.</p>
+          <div class="pj-tags"><span>C++17</span><span>Low Latency</span><span>HFT</span><span>Data Structures</span></div>
+        </a>
+
+        <a class="proj" href="https://github.com/HARSHCRR/NASA-meteor-madness" target="_blank" rel="noopener">
+          <div class="proj-top"><span class="pj-no">/03</span><span class="pj-arrow">&#8599;</span></div>
+          <h3>NASA Meteor Madness</h3>
+          <p class="pj-desc">Interactive platform to explore real asteroid trajectories and simulate Earth impacts on live NASA NEO data. 3D trajectory visualization, multi-factor risk scoring, and a planetary-defense simulator testing kinetic impactors and gravity tractors.</p>
+          <div class="pj-tags"><span>Next.js 14</span><span>Three.js</span><span>NASA API</span><span>Three Fiber</span></div>
+        </a>
+
+        <a class="proj" href="#contact">
+          <div class="proj-top"><span class="pj-no">/04</span><span class="pj-arrow">&#8599;</span></div>
+          <h3>Forex Intelligence Agent</h3>
+          <p class="pj-desc">Real-time market intelligence pipeline that scrapes ForexFactory, TradingView RSS, and Twitter/X via Nitter with Playwright. Gemini 1.5 Flash scores news 1-10 for impact, classifies currency and directional bias, and fires Telegram alerts for high-impact events (score >=7) within seconds. Next.js dashboard surfaces bullish/bearish/sideways direction.</p>
+          <div class="pj-tags"><span>Python</span><span>FastAPI</span><span>Playwright</span><span>Next.js 14</span><span>Gemini</span></div>
+        </a>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= 5. CONTACT + FOOTER ================= -->
+  <section class="panel contact" id="contact">
+    <div class="inner">
+      <div class="contact-big reveal">
+        <div class="avail">Open to opportunities</div>
+        <h2>Let's build something<br><a href="mailto:shrivastava.gunjan.h@gmail.com">worth shipping.</a></h2>
+      </div>
+      <div class="footer reveal" data-d="1">
+        <div class="col">
+          <h4>// Gunjan Shrivastava</h4>
+          <div class="brand-tag">SOFTWARE ENGINEER BUILDING <span class="ac">SYSTEMS THAT HOLD</span> UNDER LOAD.</div>
+        </div>
+        <div class="col">
+          <h4>Index</h4>
+          <a href="#about">About</a>
+          <a href="#profiles">Coding profiles</a>
+          <a href="#awards">Achievements</a>
+          <a href="#projects">Projects</a>
+          <a href="#contact">Contact</a>
+        </div>
+        <div class="col">
+          <h4>Socials</h4>
+          <a href="mailto:shrivastava.gunjan.h@gmail.com">shrivastava.gunjan.h@gmail.com</a>
+          <div class="socials" style="margin-top:14px;">
+            <a href="https://www.linkedin.com/in/gunjan-shrivastava-5b2aba2b2/" target="_blank" rel="noopener" aria-label="LinkedIn">IN</a>
+            <a href="https://x.com/certfb" target="_blank" rel="noopener" aria-label="X">X</a>
+            <a href="mailto:shrivastava.gunjan.h@gmail.com" aria-label="Email">@</a>
+          </div>
+        </div>
+      </div>
+      <div class="copyright">
+        <span>&copy; 2026 GUNJAN SHRIVASTAVA // BUILT FROM SCRATCH</span>
+        <div class="links"><a href="#home">BACK TO TOP</a></div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- Lenis: smooth inertial scroll for the curtain stack -->
+<script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>
+<script>
+  // GitHub contribution graph - real data, with a graceful fallback
+  (function () {
+    const grid = document.getElementById("gh-grid");
+    if (!grid) return;
+    const GH_USER = "HARSHCRR";
+    const lvlClass = ["", "l1", "l2", "l3", "l4"];
+
+    function render(days) {
+      grid.innerHTML = "";
+      // chunk the flat day list into week columns (7 days each)
+      for (let i = 0; i < days.length; i += 7) {
+        const col = document.createElement("div");
+        col.className = "gh-col";
+        days.slice(i, i + 7).forEach((d) => {
+          const cell = document.createElement("div");
+          const cls = lvlClass[d.level] || "";
+          cell.className = "gh-cell" + (cls ? " " + cls : "");
+          if (d.date) cell.title = `${d.count} contribution${d.count === 1 ? "" : "s"} on ${d.date}`;
+          col.appendChild(cell);
+        });
+        grid.appendChild(col);
+      }
+    }
+
+    function fallback() {
+      // deterministic placeholder so it never looks broken if the API is down
+      const days = [];
+      for (let i = 0; i < 364; i++) {
+        const r = (Math.sin(i * 12.9898) * 43758.5453) % 1;
+        const v = Math.abs(r);
+        let level = 0;
+        if (v > 0.55) level = 1;
+        if (v > 0.72) level = 2;
+        if (v > 0.85) level = 3;
+        if (v > 0.93) level = 4;
+        days.push({ level });
+      }
+      render(days);
+    }
+
+    fetch(`https://github-contributions-api.jogruber.de/v4/${GH_USER}?y=last`)
+      .then((r) => (r.ok ? r.json() : Promise.reject()))
+      .then((data) => {
+        if (!data.contributions || !data.contributions.length) return fallback();
+        render(data.contributions);
+        const total = data.total && (data.total.lastYear ?? Object.values(data.total)[0]);
+        if (total != null) {
+          const label = document.querySelector(".gh-label");
+          if (label) label.textContent = `GITHUB CONTRIBUTIONS // ${total} IN THE LAST YEAR`;
+        }
+      })
+      .catch(fallback);
+  })();
+
+  // reveal on view. threshold 0 = fire as soon as any part enters,
+  // which is essential for blocks taller than the viewport on mobile.
+  const revealEls = document.querySelectorAll(".reveal");
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((en) => {
+      if (en.isIntersecting) { en.target.classList.add("in"); io.unobserve(en.target); }
+    });
+  }, { threshold: 0, rootMargin: "0px 0px -8% 0px" });
+  revealEls.forEach((el) => io.observe(el));
+
+  // safety net: if anything is still hidden after 2.5s (observer never fired,
+  // JS hiccup, file:// quirks), force it visible. Content must never stay invisible.
+  setTimeout(() => {
+    revealEls.forEach((el) => el.classList.add("in"));
+  }, 2500);
+
+  // mobile slide-down menu
+  const menuToggle = document.getElementById("menuToggle");
+  const topbar = document.querySelector(".topbar");
+  if (menuToggle && topbar) {
+    menuToggle.addEventListener("click", () => {
+      const open = topbar.classList.toggle("menu-open");
+      menuToggle.setAttribute("aria-expanded", open ? "true" : "false");
+    });
+    document.querySelectorAll("#navLinks a").forEach((a) => {
+      a.addEventListener("click", () => {
+        topbar.classList.remove("menu-open");
+        menuToggle.setAttribute("aria-expanded", "false");
+      });
+    });
+  }
+
+  // Smooth scroll. Lenis (slow inertial) on desktop pointers only;
+  // touch / small screens use the browser's native momentum scroll.
+  const prefersReduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const isTouch = matchMedia("(max-width: 860px), (pointer: coarse)").matches;
+
+  if (!prefersReduced && !isTouch && window.Lenis) {
+    const lenis = new Lenis({
+      lerp: 0.055,            // lower = smoother + slower to settle (premium drift)
+      wheelMultiplier: 0.65,  // tame raw wheel sensitivity
+      touchMultiplier: 1.1,
+      smoothWheel: true,
+    });
+
+    function raf(time) {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    }
+    requestAnimationFrame(raf);
+
+    // route in-page anchor clicks through Lenis so they ease instead of jump
+    document.querySelectorAll('a[href^="#"]').forEach((a) => {
+      a.addEventListener("click", (e) => {
+        const id = a.getAttribute("href");
+        if (id.length < 2) return;
+        const target = document.querySelector(id);
+        if (!target) return;
+        e.preventDefault();
+        lenis.scrollTo(target, { offset: -120, duration: 1.6 });
+      });
+    });
+  }
+  // (mobile uses native CSS scroll-behavior + scroll-margin-top on panels)
+
+</script>
+</body>
+</html>
